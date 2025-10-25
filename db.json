@@ -1,3 +1,18 @@
 {
-    "users": []
+  "users": [
+    {
+      "id": "bf6f",
+      "name": "Prashant",
+      "email": "test@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "d61c",
+      "name": "Prashant 2",
+      "email": "admin@gmail.com",
+      "password": "123"
+    }
+  ],
+  "tasks": [],
+  "notes": []
 }

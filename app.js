@@ -32,7 +32,7 @@ function renderHeader() {
 
 // routing
 function route() {
-    const hash = window.location.hash || "#";
+    const hash = window.location.hash || "#"; // #dashboard
     const page = hash.substring(1);
     renderHeader();
 
@@ -73,5 +73,56 @@ function showSections(sectionName) {
     }
 }
 
-
 route();
+
+function signupUser() {
+    const formData = document.getElementById("signup-form");
+
+    formData.addEventListener("submit", async (e) => {
+        try {
+            e.preventDefault();
+
+            const userName = document.getElementById("signup-username");
+            const userEmail = document.getElementById("signup-email");
+            const userPassword = document.getElementById("signup-password");
+
+            const userObj = {
+                name: userName.value,
+                email: userEmail.value,
+                password: userPassword.value,
+            }
+
+            // To-Do => check whether this user already exists or not
+            const checkUser = await fetch("http://localhost:3000/users");
+            const checkUserData = await checkUser.json();
+
+            checkUserData.forEach((item) => {
+                if (item.email === userEmail.value) {
+                    throw new Error("Email Already Exists");
+                }
+            });
+
+            // send the data to the server
+            const res = await fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userObj),
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem("user", JSON.stringify(data));
+                currentUser = data;
+                console.log(currentUser)
+            } else {
+                throw new Error("Signup Failed");
+            }
+        } catch (error) {
+            document.getElementById("signup-error").textContent = error.message;
+        }
+    });
+}
+
+signupUser()
