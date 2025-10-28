@@ -1,18 +1,33 @@
 {
   "users": [
     {
-      "id": "bf6f",
+      "id": "cfc7",
       "name": "Prashant",
-      "email": "test@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": "d61c",
-      "name": "Prashant 2",
-      "email": "admin@gmail.com",
+      "email": "p@p.p",
       "password": "123"
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "86d6",
+      "title": "Task 1",
+      "description": "Desc 1",
+      "priority": "high",
+      "color": "green",
+      "completed": false,
+      "userId": "cfc7",
+      "createdAt": "2025-10-28T17:19:04.220Z"
+    },
+    {
+      "id": "c414",
+      "title": "Task 2",
+      "description": "Task 2",
+      "priority": "high",
+      "color": "red",
+      "completed": false,
+      "userId": "cfc7",
+      "createdAt": "2025-10-28T17:19:16.309Z"
+    }
+  ],
   "notes": []
 }
