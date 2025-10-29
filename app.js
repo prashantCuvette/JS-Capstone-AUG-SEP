@@ -91,6 +91,7 @@ function renderTasks() {
 
     const addTaskButton = document.getElementById("add-task-btn");
 
+    // Add Task Modal
     addTaskButton.addEventListener("click", () => {
         const modal = document.getElementById("task-modal");
         modal.style.display = "flex";
@@ -125,6 +126,7 @@ function renderTasks() {
 
     });
 
+    // Fetch Tasks
     let tasks = [];
     async function fetchTasks() {
         tasks = await readTasks();
@@ -133,6 +135,7 @@ function renderTasks() {
     }
     fetchTasks();
 
+    // Render Tasks List
     function renderList() {
         const list = document.getElementById("tasks-list");
 
@@ -142,8 +145,74 @@ function renderTasks() {
         } else {
             list.innerHTML = tasks.map((task) => renderTaskItems(task)).join("");
         }
+
+        // Handle Task Status Change using checkbox
+        tasks.forEach((task) => {
+            const checkbox = document.getElementById(`task-check-${task.id}`);
+            checkbox.addEventListener("change", async (e) => {
+                const status = e.target.checked;
+                console.log(e.target.checked);
+                await updateTask(task.id, { ...task, completed: status });
+                renderTasks();
+            });
+        });
+
+        // Handle Task Delete
+        tasks.forEach((task) => {
+            const delBtn = document.getElementById(`task-del-${task.id}`);
+            delBtn.addEventListener("click", async (e) => {
+                await deleteTask(task.id);
+                renderTasks();
+            });
+        });
+
+        // Handle Task Edit
+        tasks.forEach((task) => {
+            const editBtn = document.getElementById(`task-edit-${task.id}`);
+
+            editBtn.addEventListener("click", async (e) => {
+                const modal = document.getElementById("task-modal");
+                modal.style.display = "flex";
+                const form = document.getElementById("add-task-form");
+                form.reset();
+                document.getElementById("task-modal-title").textContent = "Edit Task";
+
+                document.getElementById("task-title").value = task.title;
+                document.getElementById("task-desc").value = task.description;
+                document.getElementById("task-priority").value = task.priority;
+                document.getElementById("task-color").value = task.color;
+
+                form.addEventListener("submit", async (e) => {
+                    try {
+                        e.preventDefault();
+                        console.log(task);
+                        const title = document.getElementById("task-title").value;
+                        const description = document.getElementById("task-desc").value;
+                        const priority = document.getElementById("task-priority").value;
+                        const color = document.getElementById("task-color").value;
+                        await updateTask(task.id, { ...task, title, description, priority, color });
+                        modal.style.display = "none";
+                    } catch (error) {
+                        console.log("Error Editing Task")
+                        console.log(error.message);
+                    }
+                });
+
+
+                modal.addEventListener("click", (e) => {
+                    if (e.target.id === "task-modal") {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+        });
     }
 }
+
+// b = "string"
+// 
+
+
 
 // [N1, N2, N3, N4] n1=>n2=>n3
 
